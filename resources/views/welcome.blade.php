@@ -219,9 +219,93 @@
 </section>
 
 {{-- ============================================================
-     KONTAKT / OFFERT (Med inbyggd Honeypot)
+     SERVICES (Nu i stilren bg-white för perfekt kontrast)
 ============================================================ --}}
-<section id="kontakt" class="bg-slate-50 py-24 lg:py-32">
+<section id="tjanster" class="bg-white py-24 lg:py-32">
+
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+
+        <div class="grid gap-14 lg:grid-cols-[0.8fr_1.2fr]">
+
+            {{-- Intro --}}
+            <div>
+                <p class="text-sm font-black uppercase tracking-[0.2em] text-blue-600">
+                    Våra tjänster
+                </p>
+
+                <h2 class="mt-4 text-4xl font-black leading-tight tracking-tight text-blue-950">
+                    Flexibla transportlösningar för alla behov
+                </h2>
+
+                <p class="mt-6 max-w-lg leading-7 text-slate-600">
+                    Vi erbjuder ett brett utbud av transporttjänster,
+                    anpassade efter dina behov och din bransch.
+                </p>
+
+                <a
+                    href="#kontakt"
+                    class="mt-8 inline-flex items-center gap-3 rounded-full bg-yellow-400 px-6 py-3 text-sm font-black text-blue-950 shadow-lg shadow-yellow-400/20 transition hover:-translate-y-1 hover:bg-yellow-300">
+                    Se alla tjänster
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </a>
+            </div>
+
+            {{-- Cards --}}
+            <div class="grid gap-5 sm:grid-cols-2">
+
+                @php
+                $services = [
+                ['title' => 'Godstransporter', 'text' => 'Säker och effektiv transport av gods i hela Sverige och Europa.'],
+                ['title' => 'Distribution', 'text' => 'Flexibla lösningar för både stora och små sändningar.'],
+                ['title' => 'Kyltransporter', 'text' => 'Vi hanterar temperaturkänsligt gods med största omsorg.'],
+                ['title' => 'Specialtransporter', 'text' => 'Vi löser även de mest utmanande transportuppdragen.'],
+                ];
+                @endphp
+
+                @foreach($services as $service)
+                {{-- Justerat kortens design med bg-slate-50/50 och ring-slate-100 för att ligga snyggt mot den vita bakgrunden --}}
+                <div class="group rounded-2xl bg-slate-50/50 p-7 shadow-sm ring-1 ring-slate-100 transition duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-xl hover:shadow-blue-950/5 hover:ring-slate-200/50">
+
+                    <div class="flex items-start justify-between">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M3 7h11v10H3zM14 10h4l3 3v4h-7zM6 20a2 2 0 100-4 2 2 0 000 4zm11 0a2 2 0 100-4 2 2 0 000 4z" />
+                            </svg>
+                        </div>
+
+                        <svg
+                            class="h-5 w-5 text-blue-500 transition group-hover:translate-x-1"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-4-4l4 4-4 4" />
+                        </svg>
+                    </div>
+
+                    <h3 class="mt-6 font-extrabold text-blue-950">
+                        {{ $service['title'] }}
+                    </h3>
+                    <p class="mt-2 text-sm leading-6 text-slate-500">
+                        {{ $service['text'] }}
+                    </p>
+
+                </div>
+                @endforeach
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+{{-- ============================================================
+     KONTAKT / OFFERT (Behåller bg-slate-50 med vitt formulärkort)
+============================================================ --}}
+<section id="kontakt" class="bg-slate-50 py-24 lg:py-32 border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
 
         <div class="mx-auto max-w-3xl text-center">
@@ -236,12 +320,13 @@
             </p>
         </div>
 
-        <div class="mx-auto mt-16 max-w-xl rounded-[2rem] bg-white p-8 shadow-xl shadow-slate-100 ring-1 ring-slate-200/50 sm:p-10">
+        {{-- Det vita formulärkortet poppar nu perfekt eftersom sektionen under har bg-slate-50 --}}
+        <div class="mx-auto mt-16 max-w-xl rounded-[2rem] bg-white p-8 shadow-xl shadow-slate-200/40 ring-1 ring-slate-200/50 sm:p-10">
 
             <form action="{{ route('kontakt.store') }}" method="POST" class="space-y-6">
                 @csrf
 
-                {{-- 🍯 HONEYPOT SPAM PROTECTION (Dolt för användare, synligt för bottar) --}}
+                {{-- 🍯 HONEYPOT SPAM PROTECTION (Helt dolt) --}}
                 <div class="absolute opacity-0 pointer-events-none -z-50" aria-hidden="true">
                     <label for="company_website">Lämna detta fält tomt om du är människa:</label>
                     <input type="text" id="company_website" name="company_website" autocomplete="off" tabindex="-1">
@@ -268,22 +353,9 @@
                     </div>
                 </div>
 
-                {{-- Typ av transport (Dropdown) --}}
-                <div>
-                    <label for="type" class="block text-sm font-bold text-blue-950">Vad gäller det?</label>
-                    <select id="type" name="type"
-                        class="mt-2 block w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-slate-900 focus:border-blue-600 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600">
-                        <option value="gods">Godstransport</option>
-                        <option value="distribution">Distribution</option>
-                        <option value="kyl">Kyltransport</option>
-                        <option value="special">Specialtransport</option>
-                        <option value="ovrigt">Övriga frågor</option>
-                    </select>
-                </div>
-
                 {{-- Meddelande --}}
                 <div>
-                    <label for="message" class="block text-sm font-bold text-blue-950">Beskriv ditt uppdrag (Volym, destination, datum...)</label>
+                    <label for="message" class="block text-sm font-bold text-blue-950">Beskriv ditt ärende</label>
                     <textarea id="message" name="message" rows="4" required
                         class="mt-2 block w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-slate-900 placeholder-slate-400 focus:border-blue-600 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-600"></textarea>
                 </div>
@@ -302,209 +374,6 @@
     </div>
 </section>
 
-
-{{-- ============================================================
-     SERVICES
-============================================================ --}}
-
-<section id="tjanster" class="bg-slate-50 py-24 lg:py-32">
-
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
-
-        <div class="grid gap-14 lg:grid-cols-[0.8fr_1.2fr]">
-
-            {{-- Intro --}}
-            <div>
-
-                <p class="text-sm font-black uppercase tracking-[0.2em] text-blue-600">
-                    Våra tjänster
-                </p>
-
-                <h2 class="mt-4 text-4xl font-black leading-tight tracking-tight text-blue-950">
-                    Flexibla transportlösningar för alla behov
-                </h2>
-
-                <p class="mt-6 max-w-lg leading-7 text-slate-600">
-                    Vi erbjuder ett brett utbud av transporttjänster,
-                    anpassade efter dina behov och din bransch.
-                </p>
-
-                <a
-                    href="#kontakt"
-                    class="mt-8 inline-flex items-center gap-3 rounded-full bg-yellow-400 px-6 py-3 text-sm font-black text-blue-950 shadow-lg shadow-yellow-400/20 transition hover:-translate-y-1 hover:bg-yellow-300">
-                    Se alla tjänster
-
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                </a>
-
-            </div>
-
-            {{-- Cards --}}
-            <div class="grid gap-5 sm:grid-cols-2">
-
-                @php
-                $services = [
-                ['title' => 'Godstransporter', 'text' => 'Säker och effektiv transport av gods i hela Sverige och Europa.'],
-                ['title' => 'Distribution', 'text' => 'Flexibla lösningar för både stora och små sändningar.'],
-                ['title' => 'Kyltransporter', 'text' => 'Vi hanterar temperaturkänsligt gods med största omsorg.'],
-                ['title' => 'Specialtransporter', 'text' => 'Vi löser även de mest utmanande transportuppdragen.'],
-                ];
-                @endphp
-
-                @foreach($services as $service)
-
-                <div class="group rounded-2xl bg-white p-7 shadow-sm ring-1 ring-slate-200/70 transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-
-                    <div class="flex items-start justify-between">
-
-                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M3 7h11v10H3zM14 10h4l3 3v4h-7zM6 20a2 2 0 100-4 2 2 0 000 4zm11 0a2 2 0 100-4 2 2 0 000 4z" />
-                            </svg>
-
-                        </div>
-
-                        <svg
-                            class="h-5 w-5 text-blue-500 transition group-hover:translate-x-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-4-4l4 4-4 4" />
-                        </svg>
-
-                    </div>
-
-                    <h3 class="mt-6 font-extrabold text-blue-950">
-                        {{ $service['title'] }}
-                    </h3>
-
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
-                        {{ $service['text'] }}
-                    </p>
-
-                </div>
-
-                @endforeach
-
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-
-{{-- ============================================================
-     STATS
-============================================================ --}}
-
-<section class="relative overflow-hidden bg-blue-700">
-
-    <div class="absolute -left-24 -top-24 h-64 w-64 rounded-full bg-blue-500/40 blur-3xl"></div>
-    <div class="absolute -bottom-32 right-0 h-80 w-80 rounded-full bg-yellow-400/20 blur-3xl"></div>
-
-    <div class="relative mx-auto max-w-7xl px-6 py-20 lg:px-8">
-
-        <div class="grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:items-center">
-
-            <div>
-
-                <p class="text-sm font-black uppercase tracking-[0.2em] text-yellow-300">
-                    I siffror
-                </p>
-
-                <h2 class="mt-3 text-3xl font-black text-white sm:text-4xl">
-                    Vår resa i siffror
-                </h2>
-
-                <p class="mt-4 max-w-md leading-7 text-blue-100">
-                    Vi är stolta över det vi gör – och siffrorna
-                    visar bara en del av vår resa.
-                </p>
-
-            </div>
-
-            <div class="grid grid-cols-2 gap-y-10 sm:grid-cols-4">
-
-                <div class="text-center">
-                    <p class="text-4xl font-black text-white">12+</p>
-                    <p class="mt-2 text-sm text-blue-100">Års erfarenhet</p>
-                </div>
-
-                <div class="text-center">
-                    <p class="text-4xl font-black text-white">5 000+</p>
-                    <p class="mt-2 text-sm text-blue-100">Leveranser per år</p>
-                </div>
-
-                <div class="text-center">
-                    <p class="text-4xl font-black text-white">50+</p>
-                    <p class="mt-2 text-sm text-blue-100">Nöjda kunder</p>
-                </div>
-
-                <div class="text-center">
-                    <p class="text-4xl font-black text-yellow-300">100%</p>
-                    <p class="mt-2 text-sm text-blue-100">Engagemang</p>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-
-{{-- ============================================================
-     CTA / CONTACT
-============================================================ --}}
-
-<section id="kontakt" class="relative overflow-hidden bg-slate-50 py-20">
-
-    <div class="absolute right-0 top-0 h-full w-1/3 bg-blue-50/70"></div>
-
-    <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
-
-        <div class="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-
-            <div>
-
-                <p class="text-sm font-black uppercase tracking-[0.2em] text-blue-600">
-                    Kontakta oss
-                </p>
-
-                <h2 class="mt-3 text-3xl font-black text-blue-950 sm:text-4xl">
-                    Redo för nästa transport?
-                </h2>
-
-                <p class="mt-3 text-slate-600">
-                    Hör av dig så hjälper vi dig att hitta den bästa lösningen.
-                </p>
-
-            </div>
-
-            <div class="flex flex-col gap-3 sm:flex-row">
-
-                <a
-                    href="mailto:info@blåsbo.se"
-                    class="inline-flex items-center justify-center gap-3 rounded-full bg-blue-600 px-7 py-4 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700">
-                    Kontakta oss
-                </a>
-
-                <a
-                    href="tel:+46000000000"
-                    class="inline-flex items-center justify-center gap-3 rounded-full border-2 border-blue-600 px-7 py-4 text-sm font-bold text-blue-600 transition hover:bg-blue-600 hover:text-white">
-                    Ring oss
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-</section>
 
 @include('layouts.footer')
 
