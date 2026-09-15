@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ContactController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', function () { return view('welcome'); })->name('home'); 
+
+Route::post('/kontakt', [ContactController::class, 'send']) ->name('kontakt.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
